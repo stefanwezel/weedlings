@@ -8,20 +8,22 @@ Plant_n(label): {image_1_name: path_to_image_1}, {image_2_name: path_to_image_2}
 }
 """
 import os
+import sys
 import json
 
 from _config import PATH, DATA_PATH
 
 
-# get the subfolders of the directory where data is stored
+# try to get the subfolders of the directory where data is stored
 try:
 	plants = os.listdir(DATA_PATH)
 	if len(plants) == 0:
 		print("\nThe folder you specified in _conf.py seems empty...")
 		raise FileNotFoundError
-		raise
+		# raise
 except FileNotFoundError:
 	print("\nSomething went wrong... make sure the path you specified in _conf.py is correct...\n")
+	sys.quit(0)
 
 
 # init empty dict
