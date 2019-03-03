@@ -1,3 +1,7 @@
+"""
+Helper module to visualize data or the models prediction, etc...
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 import torchvision
@@ -14,7 +18,7 @@ def _show_image(image):
 
 
 
-def plot_random_image(loader, classes):
+def plot_random_batch(loader, classes, batch_size = 4):
 	""" Picks random images from dataload, unnormalizes them and plots them
 	and prints out their labels. """
 	# pick random files
@@ -23,12 +27,12 @@ def plot_random_image(loader, classes):
 	# plot images
 	_show_image(torchvision.utils.make_grid(images))
 	# print labels
-	print(' '.join('%5s' % classes[labels[j]] for j in range(4)))
+	print(' '.join('%5s' % classes[labels[j]] for j in range(batch_size)))
 
 
 
 # plot_random_image(training_loader, os.listdir(SPLIT_DATA_PATH + 'train/'))
-# plot_random_image(validation_loader, os.listdir(SPLIT_DATA_PATH + 'validation/'))
+plot_random_batch(validation_loader, os.listdir(SPLIT_DATA_PATH + 'validation/'))
 # plot_random_image(test_loader, os.listdir(SPLIT_DATA_PATH + 'test/'))
 
 
