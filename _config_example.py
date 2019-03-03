@@ -7,3 +7,5 @@ The "_conf.py" than can be used in other scripts.
 
 PATH = "/home/yourname/projects/weedlings/" # overall path 
 DATA_PATH = "/home/yourname/projects/weedlings/data/" # write your path to the dataset here
+RAW_DATA_PATH = DATA_PATH + "raw_data/" # path where raw data is stored
+SPLIT_DATA_PATH = DATA_PATH + "split_data/" # path where the data, that we will use for the model is stored
