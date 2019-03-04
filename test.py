@@ -17,7 +17,7 @@ def test(*args, weed_net = weed_net, device = device, test_loader = test_loader)
 		for data, target in test_loader:
 			data, target = data.to(device), target.to(device)
 			output = weed_net(data)
-			test_loss = F.nll_loss(output, target, reduction = 'sum').item()
+			test_loss += F.nll_loss(output, target, reduction = 'sum').item()
 			pred = output.argmax(dim = 1, keepdim = True)
 			correct += pred.eq(target.view_as(pred)).sum().item()
 
