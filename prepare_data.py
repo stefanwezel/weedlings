@@ -32,7 +32,7 @@ training_set = torchvision.datasets.ImageFolder(
 # load batch of training data set
 training_loader = torch.utils.data.DataLoader(
 	training_set,
-	batch_size = 4,
+	batch_size = 1,
 	shuffle = True,
 	num_workers = 2)
 

@@ -1,5 +1,7 @@
 import torch
 import torchvision
+from torch import nn
+
 
 
 
@@ -24,7 +26,7 @@ class WeedNet(torch.nn.Module):
 		self.bn3 = nn.BatchNorm2d(64)
 
 		# fully connected layer
-		self.fc_1 = torch.nn.Linear(in_features = 2*2*64, out_features = 64)
+		self.fc_1 = torch.nn.Linear(in_features = 64, out_features = 64)
 		self.fc_2 = torch.nn.Linear(in_features = 64, out_features = 12)
 
 
@@ -45,13 +47,17 @@ class WeedNet(torch.nn.Module):
 		x = torch.nn.functional.relu(self.bn3(self.conv_3(x)))
 		x = torch.nn.functional.max_pool2d(x, 4)
 
+		# x = x.view(-1, 256)
+		x = x.view(-1, 64)
+
 		# delinearize (relu) first fully connected 
 		x = torch.nn.functional.relu(self.fc_1(x))
+
 		# call last layer operation
 		x = self.fc_2(x)
 
 		# return softmaxed tensor
-		return torch.nn.functional.log_softmax(x) # dim = 1?
+		return torch.nn.functional.log_softmax(x, dim = 1) # dim = 1?
 
 
 
