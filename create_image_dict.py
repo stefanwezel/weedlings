@@ -11,12 +11,12 @@ import os
 import sys
 import json
 
-from _config import PATH, DATA_PATH, RAW_DATA
+from _config import PATH, DATA_PATH, RAW_DATA_PATH
 
 
 # try to get the subfolders of the directory where data is stored
 try:
-	plants = os.listdir(RAW_DATA)
+	plants = os.listdir(RAW_DATA_PATH)
 	if len(plants) == 0:
 		print("\nThe folder you specified in _conf.py seems empty...")
 		raise FileNotFoundError
@@ -32,9 +32,9 @@ plant_dict = {}
 # populate the dict
 for plant_type in plants:
 	plant_dict[plant_type] = {}
-	plant_imgs = os.listdir(RAW_DATA + plant_type)
+	plant_imgs = os.listdir(RAW_DATA_PATH + plant_type)
 	for plant_img in plant_imgs:
-		plant_dict[plant_type][plant_type + "_" + plant_img.replace(".png", "")] = RAW_DATA + str(plant_type) +"/" + plant_img 
+		plant_dict[plant_type][plant_type + "_" + plant_img.replace(".png", "")] = RAW_DATA_PATH + str(plant_type) +"/" + plant_img 
 
 
 # write the created dict to a json file
