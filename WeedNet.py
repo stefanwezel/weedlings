@@ -32,18 +32,25 @@ class WeedNet(torch.nn.Module):
 	def forward(self, x):
 		""" define how data is passed from layer to layer. """
 
+		# create relu (delinearization) layer based on output of normalized conv1 layer
 		x = torch.nn.functional.relu(self.bn1(self.conv_1(x)))
+		# create pooling layer, based on previous relu layer
 		x = torch.nn.functional.max_pool2d(x, 4)
 
+		# relu and pool again.. this time for normalized conv2 layer
 		x = torch.nn.functional.relu(self.bn2(self.conv_2(x)))
 		x = torch.nn.functional.max_pool2d(x, 4)
 
+		# and the same for conv 3
 		x = torch.nn.functional.relu(self.bn3(self.conv_3(x)))
 		x = torch.nn.functional.max_pool2d(x, 4)
 
+		# delinearize (relu) first fully connected 
 		x = torch.nn.functional.relu(self.fc_1(x))
-		x = self.self.fc_2(x)
+		# call last layer operation
+		x = self.fc_2(x)
 
+		# return softmaxed tensor
 		return torch.nn.functional.log_softmax(x) # dim = 1?
 
 
