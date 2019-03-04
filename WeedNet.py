@@ -62,3 +62,21 @@ class WeedNet(torch.nn.Module):
 
 
 
+	def save_model(self):
+		pass
+		# TODO implement
+		# -> create state_dict
+		# -> torch.save
+		# use .tar (pytorch convention)
+
+
+
+	def load_model(self):
+		pass
+		# TODO implement
+		# model = WeedNet()
+		# model.load_state_dict(torch.load(PATH))
+		# model.eval()
+
+
+
