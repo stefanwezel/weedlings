@@ -2,7 +2,7 @@ import torch
 import torch.optim as optim
 
 from torch import nn
-from prepare_data import training_loader
+from prepare_data import training_loader, create_loader, transform
 from WeedNet import WeedNet
 from _config import MODEL_PATH
 import numpy as np
@@ -24,11 +24,12 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 
 	#optimizer = optim.Adam(weed_net.parameters(), lr = 0.0001)
 
-
-
 	for epoch in range(training_epochs):
 		running_loss = 0.0
 		correct = 0
+
+		training_loader = create_loader('train/', transform)
+		
 		for i, data in enumerate(training_loader, 0):
 			# get input for training
 			inputs, labels = data

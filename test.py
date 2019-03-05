@@ -4,13 +4,14 @@ import torch.nn.functional as F
 from _config import MODEL_PATH
 
 from WeedNet import WeedNet
-from prepare_data import test_loader
+from prepare_data import create_loader, test_transforms, test_loader
 
 weed_net = WeedNet()
 
 device = torch.device("cpu")
+# test_loader = create_loader('test/', test_transforms)
 
-def test(*args, model = weed_net, device = device, test_loader = test_loader):
+def test(test_loader, model, device = device):
 	model.eval()
 	test_loss = 0
 	correct = 0
