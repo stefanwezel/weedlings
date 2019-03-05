@@ -26,8 +26,8 @@ class WeedNet(torch.nn.Module):
 		self.bn3 = nn.BatchNorm2d(64)
 
 		# fully connected layer
-		self.fc_1 = torch.nn.Linear(in_features = 64, out_features = 64)
-		self.fc_2 = torch.nn.Linear(in_features = 64, out_features = 12)
+		self.fc_1 = torch.nn.Linear(in_features = 64, out_features = 32)
+		self.fc_2 = torch.nn.Linear(in_features = 32, out_features = 12)
 
 
 	
