@@ -46,11 +46,8 @@ def plot_random_batch(loader, classes,model = None,batch_size = 4):
 	print(prediction)
 
 
-
-model = WeedNet()
-model.load_state_dict(torch.load(MODEL_PATH + '78.0_percent_accuracy.pt'))
 # plot_random_image(training_loader, os.listdir(SPLIT_DATA_PATH + 'train/'))
-plot_random_batch(validation_loader, os.listdir(SPLIT_DATA_PATH + 'validation/'), model)
+plot_random_batch(validation_loader, os.listdir(SPLIT_DATA_PATH + 'validation/'))
 # plot_random_image(test_loader, os.listdir(SPLIT_DATA_PATH + 'test/'))
 
 
