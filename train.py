@@ -6,6 +6,8 @@ from prepare_data import training_loader, create_loader, transform
 from WeedNet import WeedNet
 from _config import MODEL_PATH
 import numpy as np
+import time
+from utils import print_time
 
 
 TRAINING_EPOCHS = 4
@@ -20,9 +22,9 @@ CRITERION = nn.CrossEntropyLoss()
 def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAINING_EPOCHS):
 
 	# optimizer searches fo a local minimum of in the lossfunction with different input parameters
-	optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
+	#optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-	#optimizer = optim.Adam(weed_net.parameters(), lr = 0.0001)
+	optimizer = optim.Adam(model.parameters(), lr = 0.001)
 
 	for epoch in range(training_epochs):
 		running_loss = 0.0
@@ -61,6 +63,6 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 	model_name = str(100 * correct) + "_percent_accuracy.pt"
 	torch.save(model.state_dict(), MODEL_PATH + model_name)
 
-	print("model: " + model_name + " has been saved.")
+	print("\nmodel: " + model_name + " has been saved.")
 	return model
 
