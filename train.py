@@ -20,12 +20,12 @@ WEED_NET = WeedNet()
 CRITERION = nn.CrossEntropyLoss()
 
 
-def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAINING_EPOCHS, batch_size = 16, learing_rate = 0.0001):
+def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAINING_EPOCHS, batch_size = 16, learning_rate = 0.0001):
 
 	# optimizer searches fo a local minimum of in the lossfunction with different input parameters
 	#optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-	optimizer = optim.Adam(model.parameters(), lr = learing_rate)
+	optimizer = optim.Adam(model.parameters(), lr = learning_rate, weight_decay = 0.0001)
 	graph = []
 
 	for epoch in range(training_epochs):
@@ -54,14 +54,14 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 			running_loss += loss.item()
 			graph.append((epoch + i/(3651/batch_size), loss.item()))
 			# pretty print progress
-			# if i % 200 == 199:    # print every 2000 mini-batches
-			# 	# print('[%d, %5d] loss: %.3f' %
-			# 	# 	  (epoch + 1, i + 1, running_loss / 200))
-			# 	average_loss = running_loss/200
-			# 	running_loss = 0.0
-			progress(i, 3651/batch_size, epoch + 1, '{}/{:.0f}'.format(i, 3651/batch_size))
+			if i % 200 == 199:    # print every 2000 mini-batches
+				print('[%d, %5d] loss: %.3f' %
+					  (epoch + 1, i + 1, running_loss / 200))
+				average_loss = running_loss/200
+				running_loss = 0.0
+			# progress(i, 3651/batch_size, epoch + 1, '{}/{:.0f}'.format(i, 3651/batch_size))
 
-	model_name = '{}epochs_{}learingrate_{}batchsize.pt'.format(training_epochs, learing_rate, batch_size)
+	model_name = '{}epochs_{}learingrate_{}batchsize.pt'.format(training_epochs, learning_rate, batch_size)
 	torch.save(model.state_dict(), MODEL_PATH + model_name)
 
 	print("\nmodel: " + model_name + " has been saved.")
