@@ -25,8 +25,12 @@ class WeedNet(torch.nn.Module):
 		self.conv_3 = torch.nn.Conv2d(in_channels = 32, out_channels = 64, kernel_size = 3) 
 		self.bn3 = nn.BatchNorm2d(64)
 
+
+		self.conv_4 = torch.nn.Conv2d(in_channels = 64, out_channels = 128, kernel_size = 3, padding = 2)
+		self.bn4 = nn.BatchNorm2d(128)
+
 		# fully connected layer
-		self.fc_1 = torch.nn.Linear(in_features = 64, out_features = 32)
+		self.fc_1 = torch.nn.Linear(in_features = 128, out_features = 32)
 		self.fc_2 = torch.nn.Linear(in_features = 32, out_features = 12)
 
 
@@ -39,16 +43,27 @@ class WeedNet(torch.nn.Module):
 		# create pooling layer, based on previous relu layer
 		x = torch.nn.functional.max_pool2d(x, 4)
 
+		# print(x.size())
+
 		# relu and pool again.. this time for normalized conv2 layer
 		x = torch.nn.functional.relu(self.bn2(self.conv_2(x)))
 		x = torch.nn.functional.max_pool2d(x, 4)
+
+		# print(x.size())
 
 		# and the same for conv 3
 		x = torch.nn.functional.relu(self.bn3(self.conv_3(x)))
 		x = torch.nn.functional.max_pool2d(x, 4)
 
+
+		# print(x.size())
+		x = torch.nn.functional.relu(self.bn4(self.conv_4(x)))
+		x = torch.nn.functional.max_pool2d(x, 4)
+
 		# x = x.view(-1, 256)
-		x = x.view(-1, 64)
+		# x = x.view(-1, 64)
+		# flatten input, since tensor ist still [batch_size, 3, 256, 256] or sth
+		x = x.view(x.size(0), -1)
 
 		# delinearize (relu) first fully connected 
 		x = torch.nn.functional.relu(self.fc_1(x))

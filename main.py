@@ -8,19 +8,24 @@ from prepare_data import create_loader, test_transforms, test_loader, validation
 import time
 from utils import print_time
 from visualize import plot_random_batch, loss_to_epochs
+from datetime import datetime
 
 NUMBER_OF_TESTS = 3
 
+# start timer
+start = datetime.now()
 #test_loader = create_loader('test/', test_transforms)
 
-model, graph = train(training_epochs = 1)
+model, graph = train(training_epochs = 4, learning_rate = 0.001)
+
 
 for i in range(NUMBER_OF_TESTS):
 	test(test_loader, model)
 
-t = time.clock()
+# t = time.clock()
 
-print_time(t, "train and test")
+# print_time(t, "train and test")
+print("\nOverall training and testing time: " + str(datetime.now()-start))
 
 loss_to_epochs(graph)
 
