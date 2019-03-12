@@ -25,7 +25,7 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 	# optimizer searches fo a local minimum of in the lossfunction with different input parameters
 	#optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-	optimizer = optim.Adam(model.parameters(), lr = learning_rate, weight_decay = 0.0001)
+	optimizer = optim.Adam(model.parameters(), lr = learning_rate, weight_decay = 0.001)
 	graph = []
 
 	for epoch in range(training_epochs):
@@ -35,7 +35,7 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 		training_loader = create_loader('train/', transform, batch_size  = batch_size)
 		average_loss = 0
 		print('')
-		
+		number_of_files = len(training_loader.dataset)
 		for i, data in enumerate(training_loader, 0):
 			# get input for training
 			inputs, labels = data
@@ -52,18 +52,17 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 			optimizer.step()
 			# add loss to overall loss
 			running_loss += loss.item()
-			graph.append((epoch + i/(3651/batch_size), loss.item()))
 			# pretty print progress
-			if i % 200 == 199:    # print every 2000 mini-batches
-				print('[%d, %5d] loss: %.3f' %
-					  (epoch + 1, i + 1, running_loss / 200))
-				average_loss = running_loss/200
+			if i % 10 == 9:    # print every 2000 mini-batches
+				# print('[%d, %5d] loss: %.3f' %
+				# 	  (epoch + 1, i + 1, running_loss / 200))
+				average_loss = running_loss/10
+				graph.append((epoch + i/(number_of_files/batch_size), average_loss))
 				running_loss = 0.0
-			# progress(i, 3651/batch_size, epoch + 1, '{}/{:.0f}'.format(i, 3651/batch_size))
+			progress(i, number_of_files/batch_size, epoch + 1, '{}/{:.0f}'.format(i, number_of_files/batch_size))
 
 	model_name = '{}epochs_{}learingrate_{}batchsize.pt'.format(training_epochs, learning_rate, batch_size)
 	torch.save(model.state_dict(), MODEL_PATH + model_name)
 
 	print("\nmodel: " + model_name + " has been saved.")
 	return model, graph
-
