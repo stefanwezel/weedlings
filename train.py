@@ -9,7 +9,7 @@ import numpy as np
 import time
 from utils import print_time, progress
 import visualize
-
+from test import test
 
 TRAINING_EPOCHS = 4
 # init model
@@ -20,19 +20,19 @@ WEED_NET = WeedNet()
 CRITERION = nn.CrossEntropyLoss()
 
 
-def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAINING_EPOCHS):
+def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAINING_EPOCHS, batch_size = 16, learing_rate = 0.0001):
 
 	# optimizer searches fo a local minimum of in the lossfunction with different input parameters
 	#optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-	optimizer = optim.Adam(model.parameters(), lr = 0.0001)
+	optimizer = optim.Adam(model.parameters(), lr = learing_rate)
 	graph = []
 
 	for epoch in range(training_epochs):
 		running_loss = 0.0
 		correct = 0
 
-		training_loader = create_loader('train/', transform, batch_size  = 16)
+		training_loader = create_loader('train/', transform, batch_size  = batch_size)
 		average_loss = 0
 		print('')
 		
@@ -52,24 +52,18 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 			optimizer.step()
 			# add loss to overall loss
 			running_loss += loss.item()
-			graph.append((epoch + i/(3651/16), loss.item()))
-			pred = outputs.argmax(dim = 1, keepdim = True)
-			correct += pred.eq(labels.view_as(pred)).sum().item()
+			graph.append((epoch + i/(3651/batch_size), loss.item()))
 			# pretty print progress
-			if i % 200 == 199:    # print every 2000 mini-batches
-				# print('[%d, %5d] loss: %.3f' %
-				# 	  (epoch + 1, i + 1, running_loss / 200))
-				average_loss = running_loss/200
-				running_loss = 0.0
-			progress(i, 3651/16, epoch + 1, average_loss, '{}/{:.0f}'.format(i, 3651/16))
-		correct /= len(training_loader.dataset)
+			# if i % 200 == 199:    # print every 2000 mini-batches
+			# 	# print('[%d, %5d] loss: %.3f' %
+			# 	# 	  (epoch + 1, i + 1, running_loss / 200))
+			# 	average_loss = running_loss/200
+			# 	running_loss = 0.0
+			progress(i, 3651/batch_size, epoch + 1, '{}/{:.0f}'.format(i, 3651/batch_size))
 
-
-	correct = np.round_(correct, 2)
-	model_name = str(100 * correct) + "_percent_accuracy.pt"
+	model_name = '{}epochs_{}learingrate_{}batchsize.pt'.format(training_epochs, learing_rate, batch_size)
 	torch.save(model.state_dict(), MODEL_PATH + model_name)
 
 	print("\nmodel: " + model_name + " has been saved.")
-	visualize.loss_to_epochs(graph)
-	return model
+	return model, graph
 

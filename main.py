@@ -7,13 +7,13 @@ from WeedNet import WeedNet
 from prepare_data import create_loader, test_transforms, test_loader, validation_loader
 import time
 from utils import print_time
-from visualize import plot_random_batch
+from visualize import plot_random_batch, loss_to_epochs
 
 NUMBER_OF_TESTS = 3
 
 #test_loader = create_loader('test/', test_transforms)
 
-model = train(training_epochs = 15)
+model, graph = train(training_epochs = 1)
 
 for i in range(NUMBER_OF_TESTS):
 	test(test_loader, model)
@@ -21,6 +21,9 @@ for i in range(NUMBER_OF_TESTS):
 t = time.clock()
 
 print_time(t, "train and test")
+
+loss_to_epochs(graph)
+
 
 # model = WeedNet()
 # model.load_state_dict(torch.load(MODEL_PATH + '78.0_percent_accuracy.pt'))

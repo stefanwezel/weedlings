@@ -26,7 +26,7 @@ label_dict = {	0: 'black_grass',
 
 
 
-def progress(count, total, epoch, average_loss, suffix=''):
+def progress(count, total, epoch, suffix=''):
     bar_len = 60
     filled_len = int(round(bar_len * count / float(total)))
 
