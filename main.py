@@ -11,9 +11,9 @@ from visualize import plot_random_batch
 
 NUMBER_OF_TESTS = 3
 
-# test_loader = create_loader('test/', test_transforms)
+#test_loader = create_loader('test/', test_transforms)
 
-model = train(training_epochs = 1)
+model = train(training_epochs = 15)
 
 for i in range(NUMBER_OF_TESTS):
 	test(test_loader, model)
@@ -22,6 +22,9 @@ t = time.clock()
 
 print_time(t, "train and test")
 
+# model = WeedNet()
+# model.load_state_dict(torch.load(MODEL_PATH + '78.0_percent_accuracy.pt'))
 
-plot_random_batch(validation_loader, os.listdir(SPLIT_DATA_PATH + 'validation/'), model)
+# for x in range(NUMBER_OF_TESTS):
+# 	plot_random_batch(validation_loader, os.listdir(SPLIT_DATA_PATH + 'validation/'), model)
 
