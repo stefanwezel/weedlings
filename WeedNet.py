@@ -60,9 +60,8 @@ class WeedNet(torch.nn.Module):
 		x = torch.nn.functional.relu(self.bn4(self.conv_4(x)))
 		x = torch.nn.functional.max_pool2d(x, 4)
 
-		# x = x.view(-1, 256)
-		# x = x.view(-1, 64)
-		# flatten input, since tensor ist still [batch_size, 3, 256, 256] or sth
+
+		# flatten input
 		x = x.view(x.size(0), -1)
 
 		# delinearize (relu) first fully connected 
@@ -74,24 +73,6 @@ class WeedNet(torch.nn.Module):
 		# return softmaxed tensor
 		return torch.nn.functional.log_softmax(x, dim = 1) # dim = 1?
 
-
-
-
-	def save_model(self):
-		pass
-		# TODO implement
-		# -> create state_dict
-		# -> torch.save
-		# use .tar (pytorch convention)
-
-
-
-	def load_model(self):
-		pass
-		# TODO implement
-		# model = WeedNet()
-		# model.load_state_dict(torch.load(PATH))
-		# model.eval()
 
 
 

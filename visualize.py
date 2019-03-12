@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import torchvision
 import torch
 import os
+import seaborn as sns
 
 from prepare_data import training_loader, validation_loader, test_loader
 from _config import SPLIT_DATA_PATH, MODEL_PATH
@@ -46,11 +47,6 @@ def plot_random_batch(loader, classes,model = None,batch_size = 4):
 	print(prediction)
 
 
-# plot_random_image(training_loader, os.listdir(SPLIT_DATA_PATH + 'train/'))
-# plot_random_batch(validation_loader, os.listdir(SPLIT_DATA_PATH + 'validation/'))
-# plot_random_image(test_loader, os.listdir(SPLIT_DATA_PATH + 'test/'))
-
-
 
 def loss_to_epochs(list_of_tuples):
 	result = list(zip(*list_of_tuples))
@@ -60,6 +56,5 @@ def loss_to_epochs(list_of_tuples):
 	plt.show()
 
 
-#loss_to_epochs([(1,0),(1.5,1),(3,2)])
 
 # TODO: visualize a random test image and the models prediction for it

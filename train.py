@@ -20,12 +20,12 @@ WEED_NET = WeedNet()
 CRITERION = nn.CrossEntropyLoss()
 
 
-def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAINING_EPOCHS, batch_size = 16, learning_rate = 0.0001):
+def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAINING_EPOCHS, batch_size = 32, learning_rate = 0.0001):
 
 	# optimizer searches fo a local minimum of in the lossfunction with different input parameters
 	#optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-	optimizer = optim.Adam(model.parameters(), lr = learning_rate, weight_decay = 0.0001)
+	optimizer = optim.Adam(model.parameters(), lr = learning_rate, weight_decay = 0.001)
 	graph = []
 
 	for epoch in range(training_epochs):
