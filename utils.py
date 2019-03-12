@@ -9,6 +9,8 @@ def print_time(t, text):
 
 	print("\ntime to " + text +": {:.0f} hours, {:.0f} minutes, {:.2f} seconds".format(hours, minutes, t))
 
+
+
 label_dict = {	0: 'black_grass',
 				1: 'charlock',
 				2: 'cleavers',
@@ -26,8 +28,8 @@ label_dict = {	0: 'black_grass',
 
 
 
-def progress(count, total, epoch, suffix=''):
-    bar_len = 60
+def progress(count, total, epoch, suffix = ''):
+    bar_len = 40
     filled_len = int(round(bar_len * count / float(total)))
 
     percents = round(100.0 * count / float(total), 1)

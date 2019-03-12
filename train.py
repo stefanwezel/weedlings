@@ -25,7 +25,7 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 	# optimizer searches fo a local minimum of in the lossfunction with different input parameters
 	#optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-	optimizer = optim.Adam(model.parameters(), lr = learning_rate, weight_decay = 0.001)
+	optimizer = optim.Adam(model.parameters(), lr = learning_rate, weight_decay = 0.0001)
 	graph = []
 
 	for epoch in range(training_epochs):
@@ -59,7 +59,7 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 				average_loss = running_loss/10
 				graph.append((epoch + i/(number_of_files/batch_size), average_loss))
 				running_loss = 0.0
-			progress(i, number_of_files/batch_size, epoch + 1, '{}/{:.0f}'.format(i, number_of_files/batch_size))
+			progress(i, number_of_files/batch_size, epoch + 1, '{}/{:.0f} Loss: {:.2f}'.format(i, number_of_files/batch_size, average_loss))
 
 	model_name = '{}epochs_{}learingrate_{}batchsize.pt'.format(training_epochs, learning_rate, batch_size)
 	torch.save(model.state_dict(), MODEL_PATH + model_name)
