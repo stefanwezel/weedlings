@@ -29,9 +29,16 @@ class WeedNet(torch.nn.Module):
 		self.conv_4 = torch.nn.Conv2d(in_channels = 64, out_channels = 128, kernel_size = 3, padding = 2)
 		self.bn4 = nn.BatchNorm2d(128)
 
+
+		self.conv_5 = torch.nn.Conv2d(in_channels = 128, out_channels = 256, kernel_size = 3, padding = 2)
+		self.bn5 = nn.BatchNorm2d(256)
+
+
 		# fully connected layer
-		self.fc_1 = torch.nn.Linear(in_features = 128, out_features = 32)
-		self.fc_2 = torch.nn.Linear(in_features = 32, out_features = 12)
+
+		self.fc_1 = torch.nn.Linear(in_features = 256, out_features = 64)
+		# self.fc_2 = torch.nn.Linear(in_features = 128, out_features = 64)
+		self.fc_2 = torch.nn.Linear(in_features = 64, out_features = 12)
 
 
 	
@@ -61,11 +68,19 @@ class WeedNet(torch.nn.Module):
 		x = torch.nn.functional.max_pool2d(x, 4)
 
 
+		x = torch.nn.functional.relu(self.bn5(self.conv_5(x)))
+		x = torch.nn.functional.max_pool2d(x, 4)
+
+
+
+
 		# flatten input
 		x = x.view(x.size(0), -1)
 
 		# delinearize (relu) first fully connected 
 		x = torch.nn.functional.relu(self.fc_1(x))
+
+		# x = torch.nn.functional.relu(self.fc_2(x))
 
 		# call last layer operation
 		x = self.fc_2(x)

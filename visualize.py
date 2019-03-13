@@ -50,7 +50,7 @@ def plot_random_batch(loader, classes,model = None,batch_size = 4):
 
 def loss_to_epochs(list_of_tuples):
 	result = list(zip(*list_of_tuples))
-	plt.plot(result[0], result[1])
+	plt.scatter(result[0], result[1])
 	plt.xlabel('epochs')
 	plt.ylabel('loss')
 	plt.show()

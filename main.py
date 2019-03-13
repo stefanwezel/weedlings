@@ -18,14 +18,14 @@ NUMBER_OF_TESTS = 3
 start = datetime.now()
 
 # train
-model, graph = train(training_epochs = 3, learning_rate = 0.001)
+model, graph = train(training_epochs = 2, learning_rate = 0.001)
 
 # test
 for i in range(NUMBER_OF_TESTS):
 	test(test_loader, model)
 
 
-print("\nOverall training and testing time: " + str(datetime.now()-start))
+print("\nOverall training and testing time: " + str(datetime.now() - start))
 
 # plot loss over epochs
 loss_to_epochs(graph)
