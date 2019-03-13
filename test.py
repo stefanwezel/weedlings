@@ -24,8 +24,9 @@ def test(test_loader, model, device = device):
 			correct += pred.eq(target.view_as(pred)).sum().item()
 
 		test_loss /= len(test_loader.dataset)
+		accuracy_percent = 100 * correct/len(test_loader.dataset)
+		print('\nTest set: Average loss:  {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(test_loss, correct, len(test_loader.dataset), accuracy_percent))
 
-		print('\nTest set: Average loss:  {:.4f}, Accuracy: {}/{} ({:.0f}%)\n'.format(test_loss, correct, len(test_loader.dataset), 100 * correct/len(test_loader.dataset)))
-
+	return test_loss, correct, len(test_loader.dataset), accuracy_percent
 
 #test(model = weedn_net, device = device, test_loader = test_loader)
