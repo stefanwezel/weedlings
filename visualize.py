@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import torchvision
 import torch
 import os
-import seaborn as sns
+#import seaborn as sns
 
 from prepare_data import training_loader, validation_loader, test_loader
 from _config import SPLIT_DATA_PATH, MODEL_PATH
@@ -48,11 +48,13 @@ def plot_random_batch(loader, classes,model = None,batch_size = 4):
 
 
 
-def loss_to_epochs(list_of_tuples):
-	result = list(zip(*list_of_tuples))
-	plt.plot(result[0], result[1])
+def loss_to_epochs(list_of_tuples_loss, list_of_tuples_accuracy = []):
+	loss_plot = list(zip(*list_of_tuples_loss))
+	accurcy_plot = list(zip(*list_of_tuples_accuracy))
+	plt.plot(loss_plot[0], loss_plot[1])
+	plt.plot(accurcy_plot[0], accurcy_plot[1])
 	plt.xlabel('epochs')
-	plt.ylabel('loss')
+	plt.ylabel('loss / accurcy')
 	plt.show()
 
 

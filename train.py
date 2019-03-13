@@ -2,9 +2,10 @@ import torch
 import torch.optim as optim
 
 from torch import nn
-from prepare_data import training_loader, create_loader, transform
+from prepare_data import training_loader, create_loader, transform, validation_loader
 from WeedNet import WeedNet
 from _config import MODEL_PATH
+import copy
 import numpy as np
 import time
 from utils import print_time, progress
@@ -26,43 +27,60 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 	#optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
 	optimizer = optim.Adam(model.parameters(), lr = learning_rate, weight_decay = 0.001)
-	graph = []
+	graph_loss = []
+	graph_accuracy = [(0,0)]
+
+	best_model = None
+
+	threshhold = 0
 
 	for epoch in range(training_epochs):
 		running_loss = 0.0
-		correct = 0
 
 		training_loader = create_loader('train/', transform, batch_size  = batch_size)
 		average_loss = 0
 		print('')
 		number_of_files = len(training_loader.dataset)
 		for i, data in enumerate(training_loader, 0):
+
 			# get input for training
 			inputs, labels = data
 
 			# init optimizer with 0
 			optimizer.zero_grad()
+
 			# rung data trough net
 			outputs = model(inputs)
+
 			# compute loss (compare output to label)
 			loss = criterion(outputs, labels)
+
 			# backpropagate loss
 			loss.backward()
+
 			# tweak parameters
 			optimizer.step()
+
 			# add loss to overall loss
 			running_loss += loss.item()
+
 			# pretty print progress
-			if i % 10 == 9:    # print every 2000 mini-batches
-				# print('[%d, %5d] loss: %.3f' %
-				# 	  (epoch + 1, i + 1, running_loss / 200))
+			if i % 10 == 9:  # append a the average of the last 10 losses as point to the loss/epoch graph_loss
 				average_loss = running_loss/10
-				graph.append((epoch + i/(number_of_files/batch_size), average_loss))
+				graph_loss.append((epoch + i/(number_of_files/batch_size), average_loss))
 				running_loss = 0.0
+
+			# Progress bar
 			progress(i, number_of_files/batch_size, epoch + 1, '{}/{:.0f} Loss: {:.2f}'.format(i, number_of_files/batch_size, average_loss))
 
+		# Validate the result of the epoch
+		test_loss, correct, dataset_size, accuracy_percent = test(validation_loader, model)
+		graph_accuracy.append((epoch + 1, accuracy_percent/100))
+		if accuracy_percent > threshhold:
+			best_model = copy.deepcopy(model)
+
 	model_name = '{}epochs_{}learingrate_{}batchsize.pt'.format(training_epochs, learning_rate, batch_size)
-	torch.save(model.state_dict(), MODEL_PATH + model_name)
+	torch.save(best_model.state_dict(), MODEL_PATH + model_name)
 
 	print("\nmodel: " + model_name + " has been saved.")
-	return model, graph
+	return best_model, (graph_loss, graph_accuracy)
