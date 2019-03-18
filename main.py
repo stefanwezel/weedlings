@@ -18,7 +18,7 @@ NUMBER_OF_TESTS = 3
 start = datetime.now()
 
 # train
-model, graph = train(training_epochs = 30, learning_rate = 0.001, batch_size = 32)
+model, graph = train(training_epochs = 30, learning_rate = 0.001, batch_size = 50)
 
 # test
 for i in range(NUMBER_OF_TESTS):

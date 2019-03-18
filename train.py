@@ -26,7 +26,7 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 	# optimizer searches fo a local minimum of in the lossfunction with different input parameters
 	#optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
-	optimizer = optim.Adam(model.parameters(), lr = learning_rate, weight_decay = 0.001)
+	optimizer = optim.Adam(model.parameters(), lr = learning_rate)
 	graph_loss = []
 	graph_accuracy = [(0,0)]
 
