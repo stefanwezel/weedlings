@@ -48,11 +48,13 @@ def plot_random_batch(loader, classes,model = None,batch_size = 4):
 
 
 
-def loss_to_epochs(list_of_tuples_loss, list_of_tuples_accuracy = []):
-	loss_plot = list(zip(*list_of_tuples_loss))
-	accurcy_plot = list(zip(*list_of_tuples_accuracy))
-	plt.plot(loss_plot[0], loss_plot[1])
-	plt.plot(accurcy_plot[0], accurcy_plot[1])
+def loss_to_epochs(*args):
+	""" plots a lists of Tupels(Points), each arg is a new graph"""
+	
+	for graph in args:
+		plot = list(zip(*graph))
+		plt.plot(plot[0],plot[1])
+		
 	plt.xlabel('epochs')
 	plt.ylabel('loss / accurcy')
 	plt.show()

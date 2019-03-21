@@ -29,6 +29,7 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 	optimizer = optim.Adam(model.parameters(), lr = learning_rate)
 	graph_loss = []
 	graph_accuracy = [(0,0)]
+	graph_validation_loss = []
 
 	best_model = None
 
@@ -76,11 +77,15 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 		# Validate the result of the epoch
 		test_loss, correct, dataset_size, accuracy_percent = test(validation_loader, model)
 		graph_accuracy.append((epoch + 1, accuracy_percent/100))
+		graph_validation_loss.append((epoch + 1, test_loss))
+
 		if accuracy_percent > threshhold:
 			best_model = copy.deepcopy(model)
+			threshhold = accuracy_percent
 
 	model_name = '{}epochs_{}learingrate_{}batchsize.pt'.format(training_epochs, learning_rate, batch_size)
 	torch.save(best_model.state_dict(), MODEL_PATH + model_name)
 
 	print("\nmodel: " + model_name + " has been saved.")
-	return best_model, (graph_loss, graph_accuracy)
+	print("Best Percentage: {:.2f}".format(threshhold))
+	return best_model, (graph_loss, graph_accuracy, graph_validation_loss)
