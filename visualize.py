@@ -15,6 +15,7 @@ from WeedNet import WeedNet
 
 
 def _show_image(image, labels = '', prediction = ''):
+	""" Helper function two plot an image ffrom an numpy array. """
     image = image / 2 + 0.5     # unnormalize
     npimg = image.numpy()
     plt.title(labels + '\n' + prediction)
@@ -26,10 +27,10 @@ def _show_image(image, labels = '', prediction = ''):
 def plot_random_batch(loader, classes,model = None,batch_size = 4):
 	""" Picks random images from dataload, unnormalizes them and plots them
 	and prints out their labels. """
+	
 	# pick random files
 	dataiter = iter(loader)
 	images, labels = dataiter.next()
-
 
 	label = 'labels:  ' +', '.join('%5s' % classes[labels[j]] for j in range(batch_size))
 	prediction = 'no model loaded'
@@ -56,9 +57,48 @@ def loss_to_epochs(*args):
 		plt.plot(plot[0],plot[1])
 		
 	plt.xlabel('epochs')
-	plt.ylabel('loss / accurcy')
+	plt.ylabel('loss / accuracy')
 	plt.show()
 
+
+
+def plot_two_graphs(loss, accuracy):
+	""" Plots two graphs in one figure, where each has its own y-axis. """
+	
+	# set colors
+	loss_color = 'tab:red'
+	accuracy_color = 'tab:blue'
+
+	# format passed data
+	loss_zipped = list(zip(*loss))
+	accuracy_zipped = list(zip(*accuracy))
+
+	# init figure
+	fig, ax1 = plt.subplots()
+
+	# create first y axis and x axis
+	ax1.plot(loss_zipped[0], loss_zipped[1], color=loss_color)
+	ax1.set_xlabel('epochs (s)')
+	ax1.set_xlim(left = 0)
+	ax1.set_ylabel('loss', color=loss_color)
+	ax1.tick_params(axis='y', labelcolor=loss_color)
+	# format left y axis
+	vals = ax1.get_yticks()
+	ax1.set_yticklabels(['{:,.3}'.format(x) for x in vals])
+
+
+	# create a second y axis
+	ax2 = ax1.twinx()
+	ax2.plot(accuracy_zipped[0], accuracy_zipped[1], color=accuracy_color)
+	ax2.set_ylabel('accuracy', color=accuracy_color)  # we already handled the x-label with ax1
+	ax2.tick_params(axis='y', labelcolor=accuracy_color)
+	# format right y axis
+	vals = ax2.get_yticks()
+	ax2.set_yticklabels(['{:,.2%}'.format(x) for x in vals])
+	
+	# show figure
+	fig.tight_layout()  # otherwise the right y-label is slightly clipped
+	plt.show()
 
 
 # TODO: visualize a random test image and the models prediction for it

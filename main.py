@@ -7,7 +7,7 @@ from train import train
 from test import test
 from WeedNet import WeedNet
 from prepare_data import create_loader, test_transforms, test_loader, validation_loader
-from visualize import plot_random_batch, loss_to_epochs
+from visualize import plot_random_batch, loss_to_epochs, plot_two_graphs
 from datetime import datetime
 
 
@@ -15,7 +15,7 @@ from datetime import datetime
 WEED_NET = WeedNet()
 
 # set hyperparameters
-TRAINING_EPOCHS = 1
+TRAINING_EPOCHS = 30
 NUMBER_OF_TESTS = 3
 LEARNING_RATE = 0.0007
 BATCH_SIZE = 32
@@ -39,6 +39,6 @@ for i in range(NUMBER_OF_TESTS):
 print("\nOverall training and testing time: " + str(datetime.now() - start))
 
 # plot loss over epochs
-loss_to_epochs(graph[0], graph[1], graph[2])
-
+# loss_to_epochs(graph[0], graph[1], graph[2])
+plot_two_graphs(graph[0], graph[1])
 
