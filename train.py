@@ -7,25 +7,20 @@ from WeedNet import WeedNet
 from _config import MODEL_PATH
 import copy
 import numpy as np
-import time
 from utils import print_time, progress
 import visualize
 from test import test
 
-TRAINING_EPOCHS = 4
-# init model
-WEED_NET = WeedNet()
-# criterion is the rule for stpping the algorithm... 
-# cross entropy is the average number of bits needed to 
-# decide from which one of two  propability functions an event is drawn
-CRITERION = nn.CrossEntropyLoss()
 
 
-def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAINING_EPOCHS, batch_size = 32, learning_rate = 0.0001):
+def train(model = None, criterion = None, training_epochs = 4, batch_size = 32, learning_rate = 0.0001):
+	""" 
+	Runs through the training data, makes a prediction and computes loss, then backpropagates
+	the result through the model and adjusts the weights and biases until a local minimum in the loss
+	function is reached.
+	"""
 
 	# optimizer searches fo a local minimum of in the lossfunction with different input parameters
-	#optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
-
 	optimizer = optim.Adam(model.parameters(), lr = learning_rate)
 	graph_loss = []
 	graph_accuracy = [(0,0)]
@@ -33,7 +28,7 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 
 	best_model = None
 
-	threshhold = 0
+	threshold = 0
 
 	for epoch in range(training_epochs):
 		running_loss = 0.0
@@ -79,13 +74,13 @@ def train(*args, model = WEED_NET, criterion = CRITERION, training_epochs = TRAI
 		graph_accuracy.append((epoch + 1, accuracy_percent/100))
 		graph_validation_loss.append((epoch + 1, test_loss))
 
-		if accuracy_percent > threshhold:
+		if accuracy_percent > threshold:
 			best_model = copy.deepcopy(model)
-			threshhold = accuracy_percent
+			threshold = accuracy_percent
 
 	model_name = '{}epochs_{}learingrate_{}batchsize.pt'.format(training_epochs, learning_rate, batch_size)
 	torch.save(best_model.state_dict(), MODEL_PATH + model_name)
 
 	print("\nmodel: " + model_name + " has been saved.")
-	print("Best Percentage: {:.2f}".format(threshhold))
+	print("Best Percentage: {:.2f}".format(threshold))
 	return best_model, (graph_loss, graph_accuracy, graph_validation_loss)
