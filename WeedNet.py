@@ -14,6 +14,7 @@ class WeedNet(torch.nn.Module):
 	def __init__(self):
 		# uses params, methods of parent class
 		super(WeedNet, self).__init__()
+
 		# define sets of layers (convolution, pooling, normalization)
 		# convolute (create filter for first convolution (map in_cannel to out_channels))
 		self.conv_1 = nn.Conv2d(in_channels = 3, out_channels = 16, kernel_size = 7) 
@@ -31,7 +32,6 @@ class WeedNet(torch.nn.Module):
 		# fully connected layers
 		self.fc_1 = nn.Linear(in_features = 64, out_features = 32)
 		self.fc_2 = nn.Linear(in_features = 32, out_features = 12)
-
 
 	
 	def forward(self, x):
@@ -59,3 +59,9 @@ class WeedNet(torch.nn.Module):
 
 		# return log_softmaxed tensor
 		return nn.functional.log_softmax(x, dim = 1)
+
+
+	def load_weights(self, path):
+		"""Loads a state dict for a WeedNet"""
+
+		self.load_state_dict(torch.load(path))
