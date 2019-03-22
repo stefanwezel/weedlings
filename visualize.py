@@ -16,11 +16,11 @@ from WeedNet import WeedNet
 
 def _show_image(image, labels = '', prediction = ''):
 	""" Helper function two plot an image ffrom an numpy array. """
-    image = image / 2 + 0.5     # unnormalize
-    npimg = image.numpy()
-    plt.title(labels + '\n' + prediction)
-    plt.imshow(np.transpose(npimg, (1, 2, 0)))
-    plt.show()
+	image = image / 2 + 0.5     # unnormalize
+	npimg = image.numpy()
+	plt.title(labels + '\n' + prediction)
+	plt.imshow(np.transpose(npimg, (1, 2, 0)))
+	plt.show()
 
 
 
@@ -66,8 +66,8 @@ def plot_two_graphs(loss, accuracy):
 	""" Plots two graphs in one figure, where each has its own y-axis. """
 	
 	# set colors
-	loss_color = 'tab:red'
-	accuracy_color = 'tab:blue'
+	loss_color = '#0082a4' # blueish
+	accuracy_color = '#00a474' # greenish
 
 	# format passed data
 	loss_zipped = list(zip(*loss))
@@ -77,22 +77,23 @@ def plot_two_graphs(loss, accuracy):
 	fig, ax1 = plt.subplots()
 
 	# create first y axis and x axis
-	ax1.plot(loss_zipped[0], loss_zipped[1], color=loss_color)
+	ax1.plot(loss_zipped[0], loss_zipped[1], color=color1)
 	ax1.set_xlabel('epochs (s)')
 	ax1.set_xlim(left = 0)
-	ax1.set_ylabel('loss', color=loss_color)
-	ax1.tick_params(axis='y', labelcolor=loss_color)
+	ax1.set_ylabel('loss', color=color1)
+	ax1.tick_params(axis='y', labelcolor=color1)
 	# format left y axis
+	ax1.set_ylim(ymin=0)
 	vals = ax1.get_yticks()
 	ax1.set_yticklabels(['{:,.3}'.format(x) for x in vals])
 
-
 	# create a second y axis
 	ax2 = ax1.twinx()
-	ax2.plot(accuracy_zipped[0], accuracy_zipped[1], color=accuracy_color)
-	ax2.set_ylabel('accuracy', color=accuracy_color)  # we already handled the x-label with ax1
-	ax2.tick_params(axis='y', labelcolor=accuracy_color)
+	ax2.plot(accuracy_zipped[0], accuracy_zipped[1], color=color2)
+	ax2.set_ylabel('accuracy', color=color2)  # we already handled the x-label with ax1
+	ax2.tick_params(axis='y', labelcolor=color2)
 	# format right y axis
+	ax2.set_ylim(ymin=0)
 	vals = ax2.get_yticks()
 	ax2.set_yticklabels(['{:,.2%}'.format(x) for x in vals])
 	
