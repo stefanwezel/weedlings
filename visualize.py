@@ -77,23 +77,23 @@ def plot_two_graphs(loss, accuracy):
 	fig, ax1 = plt.subplots()
 
 	# create first y axis and x axis
-	ax1.plot(loss_zipped[0], loss_zipped[1], color=color1)
+	ax1.plot(loss_zipped[0], loss_zipped[1], color = loss_color)
 	ax1.set_xlabel('epochs (s)')
 	ax1.set_xlim(left = 0)
-	ax1.set_ylabel('loss', color=color1)
-	ax1.tick_params(axis='y', labelcolor=color1)
+	ax1.set_ylabel('loss', color = loss_color)
+	ax1.tick_params(axis = 'y', labelcolor = loss_color)
 	# format left y axis
-	ax1.set_ylim(ymin=0)
+	ax1.set_ylim(bottom = 0)
 	vals = ax1.get_yticks()
 	ax1.set_yticklabels(['{:,.3}'.format(x) for x in vals])
 
 	# create a second y axis
 	ax2 = ax1.twinx()
-	ax2.plot(accuracy_zipped[0], accuracy_zipped[1], color=color2)
-	ax2.set_ylabel('accuracy', color=color2)  # we already handled the x-label with ax1
-	ax2.tick_params(axis='y', labelcolor=color2)
+	ax2.plot(accuracy_zipped[0], accuracy_zipped[1], color = accuracy_color)
+	ax2.set_ylabel('accuracy', color = accuracy_color)
+	ax2.tick_params(axis = 'y', labelcolor = accuracy_color)
 	# format right y axis
-	ax2.set_ylim(ymin=0)
+	ax2.set_ylim(bottom = 0)
 	vals = ax2.get_yticks()
 	ax2.set_yticklabels(['{:,.2%}'.format(x) for x in vals])
 	
