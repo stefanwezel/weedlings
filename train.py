@@ -79,7 +79,7 @@ def train(model = None, criterion = None, training_epochs = 4, batch_size = 32, 
 			threshold = accuracy_percent
 
 	model_name = '{}epochs_{}learingrate_{}batchsize.pt'.format(training_epochs, learning_rate, batch_size)
-	torch.save(best_model.state_dict(), MODEL_PATH + model_name)
+	torch.save(best_model, MODEL_PATH + model_name)
 
 	print("\nmodel: " + model_name + " has been saved.")
 	print("Best Percentage: {:.2f}".format(threshold))
