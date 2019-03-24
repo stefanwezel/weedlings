@@ -5,6 +5,7 @@ Helper module to visualize data or the models prediction, etc...
 import numpy as np
 import matplotlib.pyplot as plt
 import torchvision
+import torchvision.transforms as transforms
 import torch
 import os
 #import seaborn as sns
@@ -36,6 +37,7 @@ def plot_random_batch(loader, classes,model = None,batch_size = 4):
 	prediction = 'no model loaded'
 	# print the guess of the potencial model
 	if model != None:
+		model.eval()
 		output = model(images)
 		pred = output.argmax(dim = 1, keepdim = True)
 		prediction = 'prediction:  ' + ', '.join('%5s' % classes[pred[j]] for j in range(batch_size))
@@ -101,5 +103,14 @@ def plot_two_graphs(loss, accuracy):
 	fig.tight_layout()  # otherwise the right y-label is slightly clipped
 	plt.show()
 
+
+def guess_image(loader, classes, model):
+	model.eval()
+	for data, target in loader:
+
+		output = model(data)
+		pred = output.argmax(dim = 1, keepdim = True)
+		prediction = 'Prediction: ' + classes[pred.item()]
+		_show_image(torchvision.utils.make_grid(data), prediction = prediction)
 
 # TODO: visualize a random test image and the models prediction for it
