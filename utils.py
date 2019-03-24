@@ -29,6 +29,7 @@ label_dict = {	0: 'black_grass',
 
 
 def progress(count, total, epoch, suffix = ''):
+	""" Writes a progress bar to console. """
     bar_len = 40
     filled_len = int(round(bar_len * count / float(total)))
 

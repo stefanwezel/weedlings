@@ -12,6 +12,10 @@ device = torch.device("cpu")
 # test_loader = create_loader('test/', test_transforms)
 
 def test(test_loader, model, device = device):
+	""" 
+	Loads the test data set and tests the model on it. 
+	Returns achieved loss, correctly guessed samples and accuracy.
+	"""
 	model.eval()
 	test_loss = 0
 	correct = 0
@@ -29,4 +33,3 @@ def test(test_loader, model, device = device):
 
 	return test_loss, correct, len(test_loader.dataset), accuracy_percent
 
-#test(model = weedn_net, device = device, test_loader = test_loader)

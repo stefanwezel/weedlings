@@ -15,7 +15,7 @@ from datetime import datetime
 WEED_NET = WeedNet()
 
 # set hyperparameters
-TRAINING_EPOCHS = 30
+TRAINING_EPOCHS = 5
 NUMBER_OF_TESTS = 3
 LEARNING_RATE = 0.0007
 BATCH_SIZE = 32

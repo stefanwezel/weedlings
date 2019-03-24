@@ -18,8 +18,8 @@ import cv2
 
 # definitions
 MODEL_NAME = '300epochs_0.0007learingrate_32batchsize.pt'
-conf_threshhold = 0.8
-nms_threshhold = 0.4
+conf_threshold = 0.8
+nms_threshold = 0.4
 img_size = 128
 
 # Load model
