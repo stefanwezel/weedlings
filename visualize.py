@@ -10,7 +10,7 @@ import torch
 import os
 #import seaborn as sns
 
-from prepare_data import training_loader, validation_loader, test_loader
+from prepare_data import training_loader, validation_loader, test_loader, prepare_image
 from _config import SPLIT_DATA_PATH, MODEL_PATH
 from WeedNet import WeedNet
 
@@ -104,13 +104,17 @@ def plot_two_graphs(loss, accuracy):
 	plt.show()
 
 
-def guess_image(loader, classes, model):
+def guess_image(img, classes, model):
+	"""plots PIL Image with prediction of the model"""
 	model.eval()
-	for data, target in loader:
-
-		output = model(data)
-		pred = output.argmax(dim = 1, keepdim = True)
-		prediction = 'Prediction: ' + classes[pred.item()]
-		_show_image(torchvision.utils.make_grid(data), prediction = prediction)
-
+	transform_to_PILImage = transforms.ToPILImage()
+	img_trans = prepare_image(img)
+	output = model(img_trans)
+	pred = output.argmax(dim = 1, keepdim = True)
+	prediction = 'Prediction: ' + classes[pred.item()]
+	img_trans = img_trans.squeeze(0)
+	plt.imshow(transform_to_PILImage(img_trans))
+	plt.title(prediction)
+	plt.show()
+	
 # TODO: visualize a random test image and the models prediction for it

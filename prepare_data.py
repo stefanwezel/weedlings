@@ -99,3 +99,18 @@ def create_loader(folder, transforms, batch_size = 4):
 
 	return loader
 # print(test_loader)
+
+def prepare_image(image):
+	"""prepares an Image and returns a Tensor with 4 Dimensions and right size"""
+
+	# transforms to the right size and Tensor
+	transf = transforms.Compose([
+	transforms.Resize(158),
+	transforms.ToTensor()
+	])
+	
+	transformed_image = transf(image)
+
+	# adding a dimension to the Tensor for the batch_size = 1
+	transformed_image = transformed_image[None,:,:,:]
+	return transformed_image
