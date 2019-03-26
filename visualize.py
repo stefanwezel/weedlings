@@ -13,7 +13,7 @@ import os
 from prepare_data import training_loader, validation_loader, test_loader, prepare_image
 from _config import SPLIT_DATA_PATH, MODEL_PATH
 from WeedNet import WeedNet
-
+from utils import predictions, print_dict
 
 def _show_image(image, labels = '', prediction = ''):
 	""" Helper function two plot an image ffrom an numpy array. """
@@ -41,7 +41,9 @@ def plot_random_batch(loader, classes,model = None,batch_size = 4):
 		output = model(images)
 		pred = output.argmax(dim = 1, keepdim = True)
 		prediction = 'prediction:  ' + ', '.join('%5s' % classes[pred[j]] for j in range(batch_size))
-
+		p = predictions(model.last_probabilities,classes)
+		for dic in p:
+			print_dict(dic)
 	# plot images
 	_show_image(torchvision.utils.make_grid(images), label, prediction)
 	# print labels
@@ -111,6 +113,8 @@ def guess_image(img, classes, model):
 	img_trans = prepare_image(img)
 	output = model(img_trans)
 	pred = output.argmax(dim = 1, keepdim = True)
+	p = predictions(model.last_probabilities, classes)
+	print_dict(p[0])
 	prediction = 'Prediction: ' + classes[pred.item()]
 	img_trans = img_trans.squeeze(0)
 	plt.imshow(transform_to_PILImage(img_trans))

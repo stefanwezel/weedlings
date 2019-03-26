@@ -1,7 +1,7 @@
 import torch
 import torchvision
 from torch import nn
-
+from utils import calculate_probability
 
 
 class WeedNet(torch.nn.Module):
@@ -33,6 +33,8 @@ class WeedNet(torch.nn.Module):
 		self.fc_1 = nn.Linear(in_features = 64, out_features = 32)
 		self.fc_2 = nn.Linear(in_features = 32, out_features = 12)
 
+		self.last_probabilities = None
+
 	
 	def forward(self, x):
 		""" Define how data is passed from layer to layer. """
@@ -54,14 +56,18 @@ class WeedNet(torch.nn.Module):
 		x = x.view(x.size(0), -1)
 		# delinearize (relu) first fully connected 
 		x = nn.functional.relu(self.fc_1(x))
+		
 		# call last layer operation
 		x = self.fc_2(x)
 
+		self.last_probabilities = calculate_probability(x)
 		# return log_softmaxed tensor
-		return nn.functional.log_softmax(x, dim = 1)
+		x = nn.functional.log_softmax(x, dim = 1)
+		return x
 
 
 	def load_weights(self, path):
 		"""Loads a state dict for a WeedNet"""
 
 		self.load_state_dict(torch.load(path))
+
